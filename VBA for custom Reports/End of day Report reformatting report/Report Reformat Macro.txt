@@ -1,0 +1,66 @@
+Sub Bucket_report()
+Dim A As Worksheet
+Dim B As Worksheet
+
+Set A = ThisWorkbook.Sheets("Bucket data")
+Set B = ThisWorkbook.Sheets("Bucket report")
+
+'Product #
+A.Activate
+A.Range("A3").Select
+Range(Selection, Selection.End(xlDown)).Select
+Selection.Copy
+
+B.Activate
+B.Range("B2").PasteSpecial xlPasteValues
+
+
+'Description
+A.Activate
+A.Range("C3").Select
+Range(Selection, Selection.End(xlDown)).Select
+Selection.Copy
+
+B.Activate
+B.Range("C2").PasteSpecial xlPasteValues
+
+
+'Location
+A.Activate
+A.Range("D3").Select
+Range(Selection, Selection.End(xlDown)).Select
+Selection.Copy
+
+B.Activate
+B.Range("A2").PasteSpecial xlPasteValues
+
+
+'QTY
+A.Activate
+A.Range("H3").Select
+Range(Selection, Selection.End(xlDown)).Select
+Selection.Copy
+
+B.Activate
+B.Range("D2").PasteSpecial xlPasteValues
+
+'Case Cost
+A.Activate
+A.Range("F3").Select
+Range(Selection, Selection.End(xlDown)).Select
+Selection.Copy
+
+B.Activate
+B.Range("E2").PasteSpecial xlPasteValues
+
+
+'Total Cost
+A.Activate
+A.Range("I3").Select
+Range(Selection, Selection.End(xlDown)).Select
+Selection.Copy
+
+B.Activate
+B.Range("F2").PasteSpecial xlPasteValues
+
+End Sub

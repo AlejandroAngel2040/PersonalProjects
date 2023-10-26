@@ -1,0 +1,162 @@
+Sub Pull_data()
+
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+Dim D As Worksheet
+Dim result As String
+
+Dim sessions As Object
+Dim system As Object
+Dim Blue As Object
+
+Set A = ThisWorkbook.Sheets("Adjust Data")
+Set B = ThisWorkbook.Sheets("Adjust Share")
+Set C = ThisWorkbook.Sheets("Sheet2")
+Set D = ThisWorkbook.Sheets("Recap")
+
+Set system = CreateObject("BzWhll.WhllObj")
+Set sessions = system.Activesession
+Set Blue = system.Activesession.screen
+
+' Set the default wait timeout value
+    'g_hostsettleTime = 400     ' milliseconds
+    'h_HostSettleTime = 400     ' milliseconds
+'_____________________________________________Pulls Data From SSIMS___________\
+'==============================================================================\
+system.WaitReady 10, 1 + 400
+
+Sheets("Adjust Data").Activate
+
+Range("B2").Select
+
+Blue.SendKeys ("1.2")
+
+Blue.SendKeys ("<Enter>")
+Blue.putstring ("58"), 5, 59
+Blue.putstring ActiveCell.Value, 5, 75
+Blue.SendKeys ("<Enter>")
+
+
+Range("B2").Select
+
+
+Do
+
+Blue.putstring ActiveCell.Value, 6, 19
+Blue.SendKeys ("<Enter>")
+
+'Extract Description
+result = Blue.getstring(4, 10, 40)
+ActiveCell.Offset(0, 2).Value = result
+'Extract Cic
+result = Blue.getstring(3, 11, 8)
+ActiveCell.Offset(0, 1).Value = result
+'Extract Cost
+result = Blue.getstring(22, 124, 7)
+ActiveCell.Offset(0, 4).Value = result
+
+ActiveCell.Offset(1, 0).Select
+
+Loop Until ActiveCell.Value = 0
+'_____________________________________________________________________________/
+'============================================================================/
+
+
+
+
+
+'___________________________________________________________________Reformatting for Adjust share Tab__|
+'------------------------------------------------------------------------------------------------------V
+
+A.Range("A2:A2500").Copy        '_____________Pastes Slot Data_________________________|
+B.Activate
+B.Cells(2, 1).Select
+Selection.PasteSpecial Paste:=xlPasteValues
+
+B.Cells(2, 2).Select           '__________________Ailse column formula application____|
+B.Cells(2, 2).Formula = "=+left(A2,2)"
+Selection.AutoFill Destination:=Range("B2:B2500")
+Calculate
+
+A.Range("B2:E2500").Copy         '__________________Item to Variance values transfer___|
+B.Cells(2, 3).Select
+Selection.PasteSpecial Paste:=xlPasteValues
+
+B.Cells(2, 6).Select
+B.Cells(2, 6).Formula = "=SUMIF('Adjust Data'!B:B,$C2,'Adjust Data'!E:E)" '____________Sum if formula for column F___|
+Selection.AutoFill Destination:=Range("F2:F2500")
+Calculate
+
+B.Cells(2, 7).Select
+B.Cells(2, 7).Formula = "=SUMIF('Adjust Data'!B:B,$C2,'Adjust Data'!G:G)" '____________Sum if formula for column G___|
+Selection.AutoFill Destination:=Range("G2:G2500")
+Calculate
+
+B.Range("$A$1:$G$2500").RemoveDuplicates Columns:=1, Header:=xlYes
+
+Calculate
+B.Activate
+    Columns("A:G").Select
+    Selection.AutoFilter
+    ActiveWorkbook.Worksheets("Adjust Share").AutoFilter.Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("Adjust Share").AutoFilter.Sort.SortFields.Add2 Key _
+        :=Range("A1:A2500"), SortOn:=xlSortOnValues, Order:=xlAscending, _
+        DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("Adjust Share").AutoFilter.Sort
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+'_______________________________________Variances >$300 or <-$300____|
+'--------------------------------------------------------------------V
+B.Range("A1:G2500").Select
+Selection.AutoFilter field:=7, Criteria1:=">300", Operator:=xlOr, Criteria2:="<-300"
+
+B.Range("A2:G2500").Select
+
+Selection.SpecialCells(xlCellTypeVisible).Interior.Color = vbYellow
+
+Calculate
+
+B.Cells(1, 1).Select
+
+B.Activate
+'____________________________________________________________________|
+
+
+'_______________________________________Applies formulas for "Sheet2" Tab__|
+'--------------------------------------------------------------------------V
+C.Activate
+
+C.Cells(2, 1).Formula = "=INDEX('Adjust Data'!$A$2:$C$1000,MATCH(Sheet2!C2,'Adjust Data'!$C$2:$C$1000,0),1)"
+C.Range("A2").Select
+Selection.AutoFill Destination:=Range("A2:A6")
+
+C.Cells(2, 6).Formula = "=VLOOKUP($C2,'Adjust Data'!C:F,4,FALSE)"
+C.Range("F2").Select
+Selection.AutoFill Destination:=Range("F2:F6")
+
+
+C.Cells(9, 1).Formula = "=INDEX('Adjust Data'!$A$2:$C$1000,MATCH(Sheet2!C9,'Adjust Data'!$C$2:$C$1000,0),1)"
+C.Range("A9").Select
+Selection.AutoFill Destination:=Range("A9:A13")
+
+C.Cells(9, 6).Formula = "=VLOOKUP($C9,'Adjust Data'!C:F,4,FALSE)"
+C.Range("F9").Select
+Selection.AutoFill Destination:=Range("F9:F13")
+'__________________________________________________________________________|
+'D.Activate
+'D.Cells(2, 3).Formula = "=+COUNT('Adjust Share'!C2:C2500)"
+'D.Cells(3, 3).Formula = "=SUMIF('Adjust Data'!$E$2:$E$2500,"""" >.0 """",'Adjust Data'!$E$2:$E$2500))"
+
+
+
+
+'---------------------------------------------------------------------------------------------------|
+'_____________________________________________________End of Reformatting___________________________|
+
+End Sub
+

@@ -1,0 +1,16 @@
+Sub cleansheet()
+'
+' Cleansheet Macro
+'
+answer = MsgBox("would you like to ERASE all of your data?", vbYesNo, "Erase Data Macro")
+    
+If answer = vbYes Then
+    Range("A3:K1500").ClearContents
+    MsgBox "Eraser Macro complete", vbOKOnly + vbInformation
+End If
+
+If answer = vbNo Then
+MsgBox "Eraser Macro has been canceled", vbOK + vbCritical
+End If
+
+End Sub

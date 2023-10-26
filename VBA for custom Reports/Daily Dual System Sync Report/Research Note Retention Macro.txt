@@ -1,0 +1,49 @@
+Sub Notes_retention()
+
+Dim A As Worksheet
+Dim B As Worksheet
+Dim M As Worksheet
+
+Dim Sync As Variant
+
+Set A = ThisWorkbook.Sheets("Sync Report")
+Set B = ThisWorkbook.Sheets("Master List")
+Set M = ThisWorkbook.Sheets("Macro")
+
+A.Activate
+A.Range("A5").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+Sync = Selection.Value
+
+U = UBound(Sync, 1)
+U = U + 1
+x = 2
+
+B.Activate
+Do
+
+I = 1
+
+Do
+If B.Cells(x, 1) <> Sync(I, 1) Then
+I = I + 1
+
+If I = U Then
+I = I - 1
+End If
+
+End If
+Loop Until B.Cells(x, 1) = Sync(I, 1) Or I = UBound(Sync, 1)
+
+If B.Cells(x, 1) = Sync(I, 1) Then
+B.Cells(x, 1).Offset(0, 3).Value = Sync(I, 17)
+End If
+
+x = x + 1
+Loop Until B.Cells(x, 1) = ""
+M.Activate
+
+MsgBox "Notes have been added to the Master List", vbInformation
+
+End Sub

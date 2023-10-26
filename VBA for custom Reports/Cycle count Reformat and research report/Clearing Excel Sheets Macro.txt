@@ -1,0 +1,57 @@
+Sub Clear_data()
+Dim answer As VbMsgBoxResult
+answer = MsgBox("Are you sure about this?", vbYesNo + vbQuestion + vbDefaultButton1, "Clear all Data")
+
+
+If answer = vbYes Then
+Sheets("Adjust Data").Activate
+Range("A2:F50000").ClearContents
+Range("A2:G50000").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+
+Sheets("Adjust Data").Activate
+Range("H2:H50000").ClearContents
+
+
+Sheets("Adjust Share").Activate
+
+On Error Resume Next
+Sheets("Adjust Share").ShowAllData
+On Error GoTo 0
+
+Range("A2:G50000").ClearContents
+Range("A2:G50000").Select
+    With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+
+Range("L1").Select
+Selection.ClearContents
+With Selection.Interior
+        .Pattern = xlNone
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    
+Sheets("Sheet2").Activate
+Range("B2:E6").ClearContents
+Range("H2:H6").ClearContents
+
+Range("B9:E13").ClearContents
+Range("H9:H13").ClearContents
+
+Sheets("IRIRA").Activate
+Range("A1:N50000").ClearContents
+Range("A1:N50000").ClearContents
+Range("A1").Select
+Else
+
+End If
+
+End Sub

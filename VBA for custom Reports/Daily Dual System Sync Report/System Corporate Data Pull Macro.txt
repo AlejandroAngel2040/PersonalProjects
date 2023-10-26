@@ -1,0 +1,102 @@
+Sub Pulling_data()
+
+'***Press F8 to follow the code step by step****
+
+'______________________________________________________________________Rules and naming|
+'======================================================================================V
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+
+Dim result As String
+Dim answer As Integer
+
+Dim sessions As Object
+Dim system As Object
+Dim Blue As Object
+
+Set A = ThisWorkbook.Sheets("Sync Report")
+Set B = ThisWorkbook.Sheets("Today's List")
+Set C = ThisWorkbook.Sheets("Macro")
+
+Set system = CreateObject("BzWhll.WhllObj")
+Set sessions = system.Activesession
+Set Blue = system.Activesession.screen
+
+' Set the default wait timeout value
+    'g_hostsettleTime = 400     ' milliseconds
+    'h_HostSettleTime = 400     ' milliseconds
+'-----------------------------------------------------------------End of rules and naming|
+'========================================================================================|
+
+A.Activate
+A.Range("A6").Select ' Starting place on Sync report tab
+
+
+'-----------------------------------------------------------------Starting code if answer is yes|
+    answer = MsgBox("Would you like to pull this data from SSIMS?", vbYesNo + vbQuestion + vbDefaultButton1)
+
+If answer = vbYes Then
+'-----------------------------------------------------------------------------------------------|
+'===============================================================================================|
+
+
+'_____________________________________________Pulls Data From SSIMS___________\
+'==============================================================================\
+
+
+A.Range("A6").Select
+
+Blue.SendKeys ("1.2")
+Blue.SendKeys ("<Enter>")
+Application.Wait (Now + TimeValue("00:00:02")) ' Wait time in seconds
+
+Blue.putstring ("WNCA"), 5, 12         'warehouse code
+Blue.putstring ("25"), 5, 59           'warehouse #
+Blue.putstring ActiveCell.Value, 5, 75 'places first BR number into lookup field
+Blue.SendKeys ("<Enter>")               'presses ENTER
+Application.Wait (Now + TimeValue("00:00:02")) 'waits
+
+
+Do
+
+'Inputs BR number to specific coordinates
+Blue.putstring ActiveCell.Value, 6, 19
+Blue.SendKeys ("<Enter>")
+
+'Extract Description
+result = Blue.getstring(4, 10, 40)
+ActiveCell.Offset(0, 13).Value = result
+'Extract Cic
+result = Blue.getstring(3, 11, 8)
+ActiveCell.Offset(0, 10).Value = result
+'Extract Cost
+result = Blue.getstring(22, 124, 7)
+ActiveCell.Offset(0, 11).Value = result
+
+ActiveCell.Offset(1, 0).Select 'moves down one to the next BR item
+
+Loop Until ActiveCell.Value = 0 'Loops until
+
+Blue.SendKeys ("<F12>")
+Blue.SendKeys ("<F12>")
+'_____________________________________________________________________________/
+'============================================================================/
+A.Range("A6").Select
+
+Calculate
+
+MsgBox "Data has been pulled", vbInformation
+
+Else
+End If
+
+If answer = vbNo Then
+MsgBox "Data pull has been canceled", vbCritical
+C.Activate
+C.Range("A1").Select
+Else
+End If
+
+
+End Sub

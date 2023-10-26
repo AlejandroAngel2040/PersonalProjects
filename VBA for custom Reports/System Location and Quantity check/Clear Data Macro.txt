@@ -1,0 +1,31 @@
+Sub Clear_Data()
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+Dim D As Worksheet
+Dim Answer As Integer
+
+Set A = ThisWorkbook.Sheets("IIPAA")
+Set B = ThisWorkbook.Sheets("IILHA")
+Set C = ThisWorkbook.Sheets("Research List")
+Set D = ThisWorkbook.Sheets("Cycle Count Adjustments")
+
+Answer = MsgBox("Would you like to clear all data?", vbYesNo + vbQuestion)
+
+If Answer = vbYes Then
+
+A.Range("A2:D1000").ClearContents
+B.Range("A2:E1000").ClearContents
+C.Range("A2:G1000").Delete Shift:=xlUp
+C.Range("E2:G1000").ClearContents
+D.Range("A2:G1000").Delete Shift:=xlUp
+MsgBox "Data has been cleared", vbOKOnly + vbInformation
+
+End If
+
+If Answer = vbNo Then
+
+MsgBox "Clear data process has been canceled", vbOKOnly + vbCritical
+End If
+
+End Sub

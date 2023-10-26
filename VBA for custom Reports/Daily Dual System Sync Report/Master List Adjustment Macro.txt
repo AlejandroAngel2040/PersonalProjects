@@ -1,0 +1,81 @@
+Sub Master_list_adj()
+
+Dim A As Worksheet
+Dim B As Worksheet
+
+Dim arry As Variant
+Dim Sync As Variant
+Dim I As Long
+
+Dim answer As Integer
+
+Set A = ThisWorkbook.Sheets("Sync Report")
+Set B = ThisWorkbook.Sheets("Master List")
+
+A.Activate
+A.Range("A5").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+Sync = Selection.Value
+
+
+'___________________________________________________Checks if the Master list needs adjustments|
+'----------------------------------------------------------------------------------------------V
+
+B.Activate
+
+x = 2 '___________________________________setting the row value before the loop
+
+
+Do
+
+I = 2
+
+Do
+If B.Cells(x, 1) <> Sync(I, 1) Then
+I = I + 1
+End If
+Loop Until B.Cells(x, 1) = Sync(I, 1) Or I = UBound(Sync, 1)
+
+
+If B.Cells(x, 1) = Sync(I, 1) Then
+End If
+
+
+If B.Cells(x, 1) <> Sync(I, 1) Then
+    B.Range(Cells(x, 1), Cells(x, 3)).Select 'Highlight in red
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 255
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+End If
+
+x = x + 1
+
+Loop Until B.Cells(x, 1) = ""
+ answer = MsgBox("Would you like to delete all of the finished items on the master list?", vbYesNo + vbQuestion)
+ 
+ If answer = vbYes Then
+    Columns("A:A").Select
+    Selection.AutoFilter
+    ActiveSheet.Range("$A$1:$A$1000").AutoFilter Field:=1, Criteria1:=RGB(255, 0 _
+        , 0), Operator:=xlFilterCellColor
+    B.Range("A2:D1000").Select
+    Selection.EntireRow.SpecialCells(xlCellTypeVisible).Delete
+B.ShowAllData
+B.Range("A1:D1").AutoFilter
+MsgBox "Items not found on sync report have been deleted", vbOKOnly + vbInformation
+End If
+
+If answer = vbNo Then
+MsgBox "Deletion has been canceled, all items not on sync report have been highlighted in red", vbOKOnly + vbInformation
+End If
+'______________________________________________________________________________________________|
+'==============================================================================================|
+
+
+'
+End Sub

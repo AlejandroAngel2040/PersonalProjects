@@ -1,0 +1,79 @@
+Sub Clear_Data()
+
+'---------------------------------------Rules and Naming|
+'=======================================================V
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+Dim D As Worksheet
+
+Dim E As Worksheet
+Dim F As Worksheet
+Dim G As Worksheet
+
+Dim answer As Integer
+
+Set A = ThisWorkbook.Sheets("Sync Report")
+Set B = ThisWorkbook.Sheets("IRIRC")
+Set C = ThisWorkbook.Sheets("QMF")
+Set D = ThisWorkbook.Sheets("Macro")
+
+Set E = ThisWorkbook.Sheets("Sync")
+Set F = ThisWorkbook.Sheets("MK")
+Set G = ThisWorkbook.Sheets("ADJ.")
+'-------------------------------------End of Rules and Naming|
+'============================================================|
+
+answer = MsgBox("Would you like to clear the report?", vbYesNo + vbDefaultButton2 + vbQuestion)
+
+'---------------------------------------------Clears data if answer=yes|
+'======================================================================V
+If answer = vbYes Then
+
+A.Activate
+A.Range("A6:L1000").ClearContents
+A.Range("N6:Q1000").ClearContents
+A.Range("A1").Select
+
+
+B.Activate
+B.ShowAllData
+B.Range("A1").CurrentRegion.ClearContents
+B.Range("A1").Select
+
+C.Activate
+C.Range("A1").CurrentRegion.ClearContents
+C.Range("A1").Select
+
+E.Activate
+E.ShowAllData
+E.Range("A:K").ClearContents
+E.Range("A1").Select
+
+F.Activate
+F.Range("A1").CurrentRegion.ClearContents
+F.Range("A1").Select
+
+G.Activate
+G.Range("A1").CurrentRegion.ClearContents
+G.Range("A1").Select
+
+D.Activate
+D.Range("A1").Select
+
+MsgBox "Data has been cleared", vbInformation
+
+End If
+'--------------------------------------End of Clears data if answer=yes|
+'======================================================================|
+
+'Doesn't clear data if answer = No|
+'=================================V
+If answer = vbNo Then
+MsgBox "Clearing data task has been canceled", vbInformation
+End If
+'=================================|
+
+Calculate 'Refreshes the page
+
+End Sub

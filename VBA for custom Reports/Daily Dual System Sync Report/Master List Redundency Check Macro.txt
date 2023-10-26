@@ -1,0 +1,87 @@
+Sub Master_List_Check()
+
+'--------------------------------------------------------------Rules and naming|
+'==============================================================================V
+Dim A As Worksheet
+Dim B As Worksheet
+Dim M As Worksheet
+
+Dim arry As Variant
+Dim Sync As Variant
+Dim I As Long
+
+Dim answer As Integer
+
+Set A = ThisWorkbook.Sheets("Sync Report")
+Set B = ThisWorkbook.Sheets("Master List")
+Set M = ThisWorkbook.Sheets("Macro")
+'-------------------------------------------------------End of Rules and naming|
+'==============================================================================|
+
+'________________________________________________________________________________Checks and fills origin date
+'************************************************************************************************************
+'Rules of the arrays________________________________________________________________________________
+'---------------------------------------------------------------------------------------------------
+A.Activate
+A.Range("A5").Select '____________________selects the first cell to start on
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+Sync = Selection.Value
+
+x = 6 '___________________________________setting the row value before the loop
+
+Y = 2
+
+B.Activate
+
+arry = B.Range("A1").CurrentRegion.Offset(1, 0) '_____current region is selecting all data present from A1 on
+
+U = UBound(arry, 1)
+U = U + 1
+'___________________________________________________________________________________________________
+'---------------------------------------------------------------------------------------------------
+
+
+'-------------------------------------------------------------------|
+'===================================================================|
+
+A.Activate
+
+x = 6
+
+Do
+
+I = 1
+
+Do
+If A.Cells(x, 1) <> arry(I, 1) Then '------------------------First Check, seeing if its on the list
+I = I + 1
+End If
+Loop Until A.Cells(x, 1) = arry(I, 1) Or arry(I, 1) = ""
+
+If A.Cells(x, 1) = arry(I, 1) Then '-------------------------If it is on the list then....
+A.Cells(x, 1).Offset(0, 9) = arry(I, 3) '#of days on report
+A.Cells(x, 1).Offset(0, 14) = arry(I, 2) 'Origin Date of Problem
+A.Cells(x, 1).Offset(0, 16) = arry(I, 4) 'Notes
+End If
+
+If A.Cells(x, 1) <> arry(I, 1) Then '------------------------If it truly isn't on the list then...
+A.Cells(x, 1).Offset(0, 9) = 0
+A.Cells(x, 1).Offset(0, 14) = A.Cells(4, 2).Value
+B.Activate
+B.Range("A1").End(xlDown).Offset(1, 0) = Sync(Y, 1) '----------------Product number
+B.Range("B1").End(xlDown).Offset(1, 0) = B.Range("E1").Value '-------Origin Date
+B.Range("D1").End(xlDown).Offset(1, 0) = Sync(Y, 17) '---------------notes
+End If
+
+x = x + 1
+Y = Y + 1
+Loop Until A.Cells(x, 1) = ""
+'-------------------------------------------------------------------|
+'===================================================================|
+M.Activate
+
+MsgBox "Master list check finished", vbOKOnly + vbInformation
+
+'
+End Sub

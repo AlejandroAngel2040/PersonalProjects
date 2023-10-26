@@ -1,0 +1,228 @@
+Sub Reformatting_and_Data_Move()
+'_________________________________________________________________________________Rules and naming|
+'=================================================================================================V
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+Dim D As Worksheet
+Dim E As Worksheet
+
+Dim K As Worksheet
+Dim I As Worksheet
+Dim M As Worksheet
+Dim J As Worksheet
+Dim S As Worksheet
+
+Set A = ThisWorkbook.Sheets("Sync Report")
+Set B = ThisWorkbook.Sheets("Today's List")
+Set C = ThisWorkbook.Sheets("1 Day ago")
+Set D = ThisWorkbook.Sheets("2 Days ago")
+Set E = ThisWorkbook.Sheets("3 Days ago")
+
+Set K = ThisWorkbook.Sheets("MK")
+Set I = ThisWorkbook.Sheets("IRIRC")
+Set M = ThisWorkbook.Sheets("Macro")
+Set J = ThisWorkbook.Sheets("ADJ.")
+Set S = ThisWorkbook.Sheets("Sync")
+
+answer = MsgBox("Would you like to reformat and move data?", vbYesNo + vbQuestion)
+
+
+If answer = vbYes Then
+
+'____________________________________________________________________________________________________________________________Start of if answer = yes
+'----------------------------------------------------------------------------------------------------------------------------------------------------
+
+'______________________________________________________________________________Moves history data over to the next day
+'---------------------------------------------------------------------------------------------------------------------
+E.Activate
+E.Range("A1").CurrentRegion.ClearContents
+D.Activate
+D.Range("A1").CurrentRegion.Select
+Selection.Copy
+E.Activate
+E.Range("A1").PasteSpecial
+
+D.Activate
+D.Range("A1").CurrentRegion.ClearContents
+C.Activate
+C.Range("A1").CurrentRegion.Select
+Selection.Copy
+D.Activate
+D.Range("A1").PasteSpecial
+
+C.Activate
+C.Range("A1").CurrentRegion.ClearContents
+B.Activate
+B.Range("A1").CurrentRegion.Select
+Selection.Copy
+C.Activate
+C.Range("A1").PasteSpecial
+B.Activate
+Selection.ClearContents
+
+'________________________________________________________________________________________End of moving history data
+'******************************************************************************************************************
+
+
+'_________________________________________________________________________________________________Moves IRIRC, MK, ADJ.
+'----------------------------------------------------------------------------------------------------------------------
+I.Activate
+
+I.Range("A:K").Select
+I.Sort.SortFields.Add2 Key:=Range("A:A" _
+        ), SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("IRIRC").Sort
+        .SetRange Range("A:K")
+        .Header = xlNo
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    
+I.Range("F1").Select
+
+I.Range("B:E").Delete
+I.Range("D:G").Delete
+
+I.Range("A1").Select
+
+ Selection.AutoFilter
+    ActiveSheet.Range("A:K").AutoFilter Field:=3, Criteria1:="MK"
+
+I.Range("A1").Select
+Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+Selection.SpecialCells(xlCellTypeVisible).Copy
+
+K.Activate
+K.Range("A1").PasteSpecial
+
+I.Activate
+I.ShowAllData
+
+I.Range("A1").Select
+    ActiveSheet.Range("A:K").AutoFilter Field:=3, Criteria1:=Array("A1", "A2", "A7"), Operator:=xlFilterValues
+
+I.Range("A1").Select
+Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+Selection.SpecialCells(xlCellTypeVisible).Copy
+
+J.Activate
+J.Range("A1").PasteSpecial
+
+'____________________________________________________________________________________________________End of moving IRIRC, MK, and ADJ.
+'*************************************************************************************************************************************
+
+
+'____________________________________________________________________________Sync Report reformatting
+'----------------------------------------------------------------------------------------------------
+S.Activate
+ ActiveSheet.Range("A:H").AutoFilter Field:=3, Criteria1:="1", Operator:=xlFilterValues
+
+S.Range("A2").Select '______________________________________Product #
+Range(Selection, Selection.End(xlDown)).Select
+Selection.SpecialCells(xlCellTypeVisible).Copy
+
+A.Activate
+
+A.Range("A6").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+B.Activate
+B.Range("A1").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+
+S.Activate
+
+S.Range("D5").Select '_______________________________________Pick Location
+Range(Selection, Selection.End(xlDown)).Select
+Selection.SpecialCells(xlCellTypeVisible).Copy
+
+A.Activate
+
+A.Range("B6").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+B.Activate
+B.Range("B1").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+
+S.Activate
+
+S.Range("E5").Select '________________________________________EMS QTY
+Range(Selection, Selection.End(xlDown)).Select
+Selection.SpecialCells(xlCellTypeVisible).Copy
+
+A.Activate
+
+A.Range("C6").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+
+
+S.Activate
+
+S.Range("F5").Select '_______________________________________EXE QTY
+Range(Selection, Selection.End(xlDown)).Select
+Selection.SpecialCells(xlCellTypeVisible).Copy
+
+A.Activate
+
+A.Range("D6").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+
+
+S.Activate
+
+S.Range("G5").Select '_______________________________________Pending QTY
+Range(Selection, Selection.End(xlDown)).Select
+Selection.SpecialCells(xlCellTypeVisible).Copy
+
+A.Activate
+
+A.Range("E6").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+
+
+S.Activate
+
+S.Range("H5").Select '_______________________________________dif
+Range(Selection, Selection.End(xlDown)).Select
+Selection.SpecialCells(xlCellTypeVisible).Copy
+
+B.Activate
+B.Range("C1").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+A.Activate
+
+A.Range("F6").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+
+
+M.Activate
+'________________________________________________________________End of Sync report formatting
+'*********************************************************************************************
+
+
+MsgBox "Task has been completed", vbInformation
+End If
+'______________________________________________________________________________________________________End of If answer = Yes
+'****************************************************************************************************************************
+
+
+'______________________________________________________________________If Answer = no
+If answer = vbNo Then
+MsgBox "Prcess has been canceled", vbInformation
+End If
+'***************************************************************End of if answer = no
+
+
+End Sub

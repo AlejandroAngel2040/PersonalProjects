@@ -1,0 +1,268 @@
+Sub Get_location_information()
+
+Dim sessions As Object
+Dim system As Object
+Dim blue As Object
+
+Dim Result As String
+
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+Dim D As Worksheet
+Dim E As Worksheet
+
+Set system = CreateObject("BZWhll.WhllObj")
+Set sessions = system.Activesession
+Set blue = system.Activesession.screen
+
+Set A = ThisWorkbook.Sheets("IIPAA")
+Set B = ThisWorkbook.Sheets("IILHA")
+Set C = ThisWorkbook.Sheets("Macros")
+Set D = ThisWorkbook.Sheets("Cycle count Adjustments")
+Set E = ThisWorkbook.Sheets("Research List")
+
+Answer = MsgBox("Would you like to commence with Step 1?", vbYesNo + vbQuestion)
+
+If Answer = vbYes Then
+
+blue.SendKeys ("<PF3>")
+blue.SendKeys ("IIPAA")
+blue.SendKeys ("<ENTER>")
+system.waitready 10, 1 + 800
+
+D.Activate
+D.Range("C2:C150").copy
+
+A.Activate
+A.Range("A2").PasteSpecial xlPasteValues
+A.Range("A2").Select
+
+
+Do
+
+blue.SendKeys ("<Escape>")
+system.waitready 10, 1 + 800
+blue.SendKeys ("<ENTER>")
+
+
+y = ActiveCell
+blue.SendKeys (y) 'Product #
+blue.SendKeys ("<ENTER>")
+system.waitready 10, 1 + 400
+
+'_________________________________________________Line 1
+L1 = blue.getstring(15, 16, 6) 'Location Line 1
+ActiveCell.Offset(0, 1) = L1
+
+Q1 = blue.getstring(15, 73, 5) 'QTY Line 1
+ActiveCell.Offset(0, 2) = Q1
+
+F = 1
+G = 16
+Do
+'_________________________________________________Line 2-8
+ActiveCell.Offset(1, 0).EntireRow.Insert
+ActiveCell.Offset(1, 0).Select
+
+L1 = blue.getstring(G, 16, 6) 'Location Line 2
+ActiveCell.Offset(0, 1) = L1
+
+Q1 = blue.getstring(G, 73, 5) 'QTY Line 2
+ActiveCell.Offset(0, 2) = Q1
+
+F = F + 1
+G = G + 1
+Loop Until F = 8
+
+ActiveCell.Offset(1, 0).Select
+Loop Until ActiveCell = ""
+
+blue.SendKeys ("<Escape>")
+blue.SendKeys ("<Escape>")
+
+'Reformat for Last let downs page---------------------------------------\
+A.Range("$A$1:$A$1000").AutoFilter Field:=1, Criteria1:="<>"
+
+A.Range("B2:B1000").Select
+Selection.SpecialCells(xlCellTypeVisible).copy
+
+B.Activate
+
+B.Range("A2").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+B.Range("A2").Select
+
+A.ShowAllData
+A.Activate
+A.Range("A2").Select
+'------------------------------------------------------------------------/
+system.waitready 10, 1 + 1500
+
+blue.SendKeys ("<PF3>")
+blue.SendKeys ("IILHA")
+blue.SendKeys ("<ENTER>")
+system.waitready 10, 1 + 800
+
+B.Activate
+B.Range("A2").Select
+
+Do
+
+y = ActiveCell
+
+blue.SendKeys (y)
+blue.SendKeys ("<ENTER>")
+system.waitready 10, 1 + 800
+
+Result = blue.getstring(13, 4, 22)
+ActiveCell.Offset(0, 1) = Result
+
+Result = blue.getstring(13, 38, 10)
+ActiveCell.Offset(0, 2) = Result
+
+Result = blue.getstring(14, 31, 6)
+ActiveCell.Offset(0, 3) = Result
+
+Result = blue.getstring(13, 58, 5)
+ActiveCell.Offset(0, 4) = Result
+
+blue.SendKeys ("<Escape>")
+system.waitready 10, 1 + 400
+
+blue.SendKeys ("<ENTER>")
+system.waitready 10, 1 + 800
+
+ActiveCell.Offset(1, 0).Select
+Loop Until ActiveCell = ""
+
+blue.SendKeys ("<Escape>")
+blue.SendKeys ("<Escape>")
+
+C.Activate
+
+Calculate
+
+A.Range("A2:C2500").copy
+
+E.Range("A2").PasteSpecial (xlPasteValues)
+
+E.Activate
+
+T = A.Cells(2, 7)
+S = 0
+
+x = 0
+Do
+E.Range("A2:G9").Offset(x, 0).Select
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlInsideVertical)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+    With Selection.Borders(xlInsideHorizontal)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlThin
+    End With
+x = x + 8
+
+S = S + 1
+Loop Until S = T
+
+ActiveSheet.Range("$A$1:$C$2500").AutoFilter Field:=3, Criteria1:=""
+
+E.Range("A2:G2500").SpecialCells(xlCellTypeVisible).EntireRow.Delete
+
+E.ShowAllData
+
+E.Range("A2").Select
+
+ActiveSheet.Range("$A$1:$C$2500").AutoFilter Field:=1, Criteria1:="<>"
+
+E.Range("E2:E2500").SpecialCells(xlCellTypeVisible).Formula = "=vlookup(@$B$2:$B$2500,'Cycle Count Adjustments'!$A$2:$G$2500,6,false)"
+E.Range("F2:F2500").SpecialCells(xlCellTypeVisible).Formula = "=IF(VLOOKUP(@$B$2:$B$2500,IILHA!$A:$E,4,FALSE)="""","""",VLOOKUP(@$B$2:B2500,IILHA!$A:$E,4,FALSE))"
+E.Range("G2:G2500").SpecialCells(xlCellTypeVisible).Formula = "=IF(VLOOKUP(@$B$2:$B$2500,IILHA!$A:$E,5,FALSE)="""","""",VLOOKUP(@$B$2:B2500,IILHA!$A:$E,5,FALSE))"
+
+E.ShowAllData
+
+C.Activate
+
+
+
+MsgBox "Research formatting has finished.", vbInformation + vbOKOnly
+Calculate
+
+End If
+
+If Answer = vbNo Then
+MsgBox "Step 1 has been canceled", vbOKOnly + vbCritical
+End If
+
+End Sub

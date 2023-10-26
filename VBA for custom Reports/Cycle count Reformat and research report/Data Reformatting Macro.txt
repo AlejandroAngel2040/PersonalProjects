@@ -1,0 +1,89 @@
+Sub Data_move()
+
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+Dim Path As String
+Dim filename1 As String
+Dim filename2 As String
+
+Set A = ThisWorkbook.Sheets("IRIRA")
+Set B = ThisWorkbook.Sheets("Adjust Data")
+
+Sheets("IRIRA").Activate
+
+Range("A4:K2000").Select
+Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+'______Moves Data to Adjust Data sheet if it has "PHYSICAL" or "CYCLE" value____|
+'-------------------------------------------------------------------------------V
+        
+Selection.AutoFilter field:=9, Criteria1:=Array("PHYSICAL", "CYCLE"), Operator:=xlFilterValues
+
+A.Range("B6:B2000").Copy
+B.Range("B2").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone
+
+A.Range("D6:D2000").Copy
+B.Range("A2").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone
+
+A.Range("H6:H2000").Copy
+B.Range("E2").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone
+
+
+
+'----------------------------------------------------------------------------------|
+'__________________________________________________________________________________|
+
+
+
+'________________________________________________Formats_to_5_character_item_#s_and_deletes_unnecessary_0s_____|
+'--------------------------------------------------------------------------------------------------------------V
+Sheets("Adjust Data").Activate
+
+Range("K2").Select
+
+
+B.Cells(2, 11).Formula = "=+TEXT(B2,""00000"")"
+Selection.AutoFill Destination:=Range("K2:K2000"), Type:=xlFillCopy '_____________________________Applies 5 Character formula
+Calculate
+
+Range("A:K").AutoFilter
+
+B.Range("A2:K20000").AutoFilter field:=11, Criteria1:="00000" '____________________Filters data
+
+Application.DisplayAlerts = False
+        Range("A2:K20000").Select
+        B.Range("A2:K20000").SpecialCells(xlCellTypeVisible).ClearContents '_______Deletes "00000"
+    Calculate
+
+
+On Error Resume Next
+    B.ShowAllData
+On Error GoTo 0
+
+B.Range("K2:K20000").Select
+
+    Application.CutCopyMode = False
+     Selection.Copy
+    Range("B2").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        
+        Application.DisplayAlerts = True
+        
+        Application.CutCopyMode = False
+        
+        Range("A:K").AutoFilter
+        
+ Range("K2:K50000").ClearContents
+ 
+ B.Range("G2").Select
+ B.Cells(2, 7).Formula = "=$F2*$E2"
+ Selection.AutoFill Destination:=Range("G2:G1500"), Type:=xlFillCopy
+ Calculate
+'----------------------------------------------------------------------------------------------------------------|
+'________________________________________________________________________________________________________________|
+
+
+End Sub
