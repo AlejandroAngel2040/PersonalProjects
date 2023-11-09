@@ -1,4 +1,4 @@
-REM The Original Author of this is UberGuidoZ, I made my own modifications that has this ducky code work with ios 17.1
+REM The Original Author of this is UberGuidoZ, I made my own modifications that has this ducky code work with ios 17
 REM Modifications by AlejandroAngel2040
 REM V1.0
 
@@ -13,12 +13,12 @@ ENTER
 DELAY 1000
 GUI t
 DELAY 500
-STRING 2092215656
+STRING PHONE NUMBER HERE
 DELAY 250
 ENTER
 DELAY 1000
 ALT TAB
 DELAY 1000
-STRING I sent this using my flipper, I FLIPPIN DID IT!
+STRING TEXT MESSAGE HERE
 DELAY 150
 ENTER
