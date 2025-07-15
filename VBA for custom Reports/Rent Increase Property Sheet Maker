@@ -1,0 +1,543 @@
+Sub Reformat_per_property()
+'lookup how to save as a new excel sheet and to populate its own street addresses, Units Current rate, Unit type
+'using a unique list for each property
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+Dim cell As Range
+Dim ws As Worksheet
+Dim password As String
+Dim col As Range
+
+Set A = ThisWorkbook.Sheets("PPMA")
+Set B = ThisWorkbook.Sheets("Sheet3")
+
+password = "Password" ' Change this to your desired password
+
+B.Activate
+B.Range("B6").Select
+
+A.Activate
+A.Range("O2").Select
+
+User = Environ("username")
+
+X = 2
+
+Do
+A.Activate
+CurrentProp = A.Cells(X, 12).Text
+
+    A.Columns("O:R").Select
+    
+    ActiveSheet.Range("$O$1:$R$206").AutoFilter Field:=1, Criteria1:=CurrentProp
+
+Y = 7
+Do
+
+Do
+ActiveCell.Offset(1, 0).Select
+Loop Until ActiveCell.EntireRow.Hidden = False
+
+Propcd = CurrentProp
+Unit = Selection.Offset(0, 1)
+Description = Selection.Offset(0, 2)
+CurrentRate = Selection.Offset(0, 3)
+Address = Selection.Offset(0, 4)
+
+B.Activate
+Selection.Offset(0, -1) = Address
+Selection = Unit
+Selection.Offset(0, 1) = Description
+Selection.Offset(0, 2) = CurrentRate
+
+If CurrentRate <> "" Then
+Selection.Offset(0, 3).Formula = "=D" & Selection.Row & "+F" & Selection.Row
+Selection.Offset(0, 4).Formula = "=Sum(K" & Selection.Row & ":V" & Selection.Row & ")"
+End If
+
+B.Cells(Y, 1).EntireRow.Insert
+Selection.Offset(1, 0).Select
+Y = Y + 1
+
+A.Activate
+Loop Until ActiveCell = ""
+
+A.Columns("O:S").Select
+Selection.AutoFilter
+
+'Opens the original Template to paste new data
+Workbooks.Add Template:="C:\Users\Filepath\Template.xlsm"
+
+Set C = ActiveWorkbook.Sheets("Sheet1")
+
+C.Unprotect password:=password
+
+C.Range("B5:B17").EntireRow.Delete
+
+B.Activate
+B.Range("B6").Select
+Selection.CurrentRegion.EntireRow.Copy
+
+C.Activate
+C.Range("B5").Select
+Selection.EntireRow.Insert shift:=xlDown
+
+Counter = 5
+Do
+ActiveCell.Offset(1, 0).Select
+Counter = Counter + 1
+Loop Until ActiveCell = "MONTHLY"
+
+Range("B5:E" & Counter - 2).Sort Key1:=Range("B5"), Order1:=xlAscending, Header:=xlYes
+
+ActiveCell.Offset(0, 2).Formula = "=SUM(D6:D" & Counter - 1 & ")"
+ActiveCell.Offset(0, 3).Formula = "=SUM(E6:E" & Counter - 1 & ")"
+ActiveCell.Offset(0, 4).Formula = "=SUM(F6:F" & Counter - 1 & ")"
+ActiveCell.Offset(0, 7).Formula = "=SUM(I6:I" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 9).Formula = "=SUM(K6:K" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 10).Formula = "=SUM(L6:L" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 11).Formula = "=SUM(M6:M" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 12).Formula = "=SUM(N6:N" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 13).Formula = "=SUM(O6:O" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 14).Formula = "=SUM(P6:P" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 15).Formula = "=SUM(Q6:Q" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 16).Formula = "=SUM(R6:R" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 17).Formula = "=SUM(S6:S" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 18).Formula = "=SUM(T6:T" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 19).Formula = "=SUM(U6:U" & Counter - 2 & ")"
+ActiveCell.Offset(-1, 20).Formula = "=SUM(V6:V" & Counter - 2 & ")"
+
+ActiveCell.Offset(0, 9).Formula = "=SUM(D" & Counter & "+K" & Counter - 1 & ")"
+ActiveCell.Offset(0, 10).Formula = "=SUM(D" & Counter & "+L" & Counter - 1 & ")"
+ActiveCell.Offset(0, 11).Formula = "=SUM(D" & Counter & "+M" & Counter - 1 & ")"
+ActiveCell.Offset(0, 12).Formula = "=SUM(D" & Counter & "+N" & Counter - 1 & ")"
+ActiveCell.Offset(0, 13).Formula = "=SUM(D" & Counter & "+O" & Counter - 1 & ")"
+ActiveCell.Offset(0, 14).Formula = "=SUM(D" & Counter & "+P" & Counter - 1 & ")"
+ActiveCell.Offset(0, 15).Formula = "=SUM(D" & Counter & "+Q" & Counter - 1 & ")"
+ActiveCell.Offset(0, 16).Formula = "=SUM(D" & Counter & "+R" & Counter - 1 & ")"
+ActiveCell.Offset(0, 17).Formula = "=SUM(D" & Counter & "+S" & Counter - 1 & ")"
+ActiveCell.Offset(0, 18).Formula = "=SUM(D" & Counter & "+T" & Counter - 1 & ")"
+ActiveCell.Offset(0, 19).Formula = "=SUM(D" & Counter & "+U" & Counter - 1 & ")"
+ActiveCell.Offset(0, 20).Formula = "=SUM(D" & Counter & "+V" & Counter - 1 & ")"
+
+
+ActiveCell.Offset(2, 0) = "GSI Total"
+Range(ActiveCell.Offset(2, 0), ActiveCell.Offset(2, 1)).Merge
+ActiveCell.Offset(2, 0).Font.Bold = True
+
+ActiveCell.Offset(3, 0).Formula = "=SUM(K" & Counter & ":V" & Counter & ")"
+Range(ActiveCell.Offset(3, 0), ActiveCell.Offset(3, 1)).Merge
+ActiveCell.Offset(3, 0).Font.Bold = True
+
+ActiveCell.Offset(2, 0).Select
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlDouble
+        .Weight = xlThin
+    End With
+Selection.HorizontalAlignment = xlLeft
+
+ActiveCell.Offset(1, 0).Select
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+Selection.HorizontalAlignment = xlLeft
+
+'Outlines all months
+Range(Cells(6, 11), Cells(Counter - 2, 22)).Select
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+
+'Outlines Column G
+Range(Cells(5, 7), Cells(Counter - 2, 7)).Select
+    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+
+Range("A5:I5").Select
+Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    Selection.Borders(xlEdgeLeft).LineStyle = xlNone
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    Selection.Borders(xlEdgeRight).LineStyle = xlNone
+    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+
+Calculate
+Propcd = A.Cells(X, 12).Text
+Range("A1") = "Property " & Propcd & " 2025"
+
+'creating the illustrations and setting macros to them
+Range("X4") = "Fill this out please"
+Range("X5") = "City"
+Range("Y5") = "Zip code"
+
+Range("X9") = "Eraser"
+Range("X8") = "Step 1"
+
+Range("Y9") = "Rent Increase"
+Range("Y8") = "Step 2"
+Range("X8:Y5").Font.Bold = True
+
+Range("X10").Select
+    ActiveSheet.Pictures.Insert( _
+        "https://cdn.hubblecontent.osi.office.net/icons/publish/icons_eraser/eraser.svg" _
+        ).Select
+    Selection.OnAction = "Eraser"
+    
+    Range("Y10").Select
+    ActiveSheet.Pictures.Insert( _
+        "https://cdn.hubblecontent.osi.office.net/icons/publish/icons_openenvelope/openenvelope.svg" _
+        ).Select
+    Selection.OnAction = "UserForm_1"
+    
+'Resize all columns
+ 'Columns("A:V").EntireColumn.AutoFit
+'ActiveSheet.Shapes.Range(Array("Graphic 5")).Select
+    
+'making the macro labels and macros look good
+Range("Y5").Select
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    
+Range("X5").Select
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+
+Range("X6").Select
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+
+Range("Y6").Select
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+
+Range("X9:Y14").Select
+Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+    
+Range("X10:Y14").Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
+
+Range("X9:X14").Select
+Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    Selection.Borders(xlInsideVertical).LineStyle = xlNone
+    
+    Range("Y9:Y14").Select
+Selection.Borders(xlDiagonalDown).LineStyle = xlNone
+    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
+    With Selection.Borders(xlEdgeLeft)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeTop)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeBottom)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+    With Selection.Borders(xlEdgeRight)
+        .LineStyle = xlContinuous
+        .ColorIndex = 0
+        .TintAndShade = 0
+        .Weight = xlMedium
+    End With
+
+Set col = Columns("X") ' Change "A" to your desired column
+
+' Center the text in the entire column
+With col
+.HorizontalAlignment = xlCenter
+.VerticalAlignment = xlCenter
+End With
+
+Set col = Columns("Y") ' Change "A" to your desired column
+
+' Center the text in the entire column
+With col
+.HorizontalAlignment = xlCenter
+.VerticalAlignment = xlCenter
+End With
+
+Range("A1").Select
+
+Columns("A:A").EntireColumn.Hidden = True
+Range("AB2") = Propcd
+
+Range("X6").Locked = False
+Range("Y6").Locked = False
+
+'Saving New Property sheet to desktop
+C.Protect password:=password
+
+ActiveWorkbook.SaveAs Filename:="C:\Users\FilePath\" & Propcd & " Rent Increase 2025", FileFormat:=xlOpenXMLWorkbookMacroEnabled
+
+ActiveWorkbook.Close
+
+B.Activate
+Range(Cells(6, 2), Cells(Counter - 1, 2)).EntireRow.Delete
+
+A.Activate
+
+X = X + 1
+Loop Until A.Cells(X, 18) = "0"
+
+
+End Sub

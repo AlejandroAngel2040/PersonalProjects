@@ -1,0 +1,882 @@
+Private Sub CommandButton1_Click()
+
+Dim A As Worksheet
+Dim B As Worksheet
+Dim C As Worksheet
+Dim D As Workbook
+
+Dim strWorkbookName As String
+strWorkbookName = ThisWorkbook.FullName
+Dim appWD As New Word.Application
+Dim wddoc As Word.Document
+
+Dim Ar1 As Variant
+
+Set A = ThisWorkbook.Sheets("Sheet1")
+Set B = ThisWorkbook.Sheets("Sheet2")
+
+Propcd = A.Range("AB2").Value
+
+Unload Me
+
+Y = 2
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Jan
+If CheckBox1.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+
+    If A.Cells(x, 11) <> "" Then
+    
+        'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+    
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Feb
+If CheckBox2.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+
+    If A.Cells(x, 12) <> "" Then
+        
+        'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+    
+    
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Mar
+If CheckBox3.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+    
+    If A.Cells(x, 13) <> "" Then
+            
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+    
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Apr
+If CheckBox4.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+    
+    If A.Cells(x, 14) <> "" Then
+        
+        'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'May
+If CheckBox5.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+    
+    If A.Cells(x, 15) <> "" Then
+    
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Jun
+If CheckBox6.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+    
+    If A.Cells(x, 16) <> "" Then
+    
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Jul
+If CheckBox7.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+
+    If A.Cells(x, 17) <> "" Then
+    
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Aug
+If CheckBox8.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+    
+    If A.Cells(x, 18) <> "" Then
+    
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Sep
+If CheckBox9.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+
+    If A.Cells(x, 19) <> "" Then
+    
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Oct
+If CheckBox10.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+
+    If A.Cells(x, 20) <> "" Then
+    
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Nov
+If CheckBox11.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+    
+    If A.Cells(x, 21) <> "" Then
+    
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    Y = Y + 1
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+End If
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Dec
+If CheckBox12.Value = True Then
+    x = 6
+    A.Range("B6").Select
+
+    Do
+
+    If A.Cells(x, 22) <> "" Then
+    
+            'IF YES__________________________________________
+        If OptionButton1 = "True" Then
+        If A.Cells(x, 1) <> "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        
+        If A.Cells(x, 1) = "" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If
+        End If '__________________________________________|
+        
+        'IF NO_____________________________________________|
+        If OptionButton2 = "True" Then
+        'Street Address
+        A.Cells(x, 1).Copy
+        B.Cells(Y, 4).PasteSpecial Paste:=xlPasteValues
+        End If '___________________________________________|
+        
+    'Unit
+    A.Cells(x, 2).Copy
+    B.Cells(Y, 5).PasteSpecial Paste:=xlPasteValues
+    'Current City
+    A.Cells(6, 24).Copy
+    B.Cells(Y, 6).PasteSpecial Paste:=xlPasteValues
+    'Zipcode
+    A.Cells(6, 25).Copy
+    B.Cells(Y, 7).PasteSpecial Paste:=xlPasteValues
+    'Effective date
+    A.Cells(x, 8).Copy
+    B.Cells(Y, 8).PasteSpecial Paste:=xlPasteValues
+    'issue date
+    A.Cells(x, 7).Copy
+    B.Cells(Y, 13).PasteSpecial Paste:=xlPasteValues
+    'Old rent
+    A.Cells(x, 4).Copy
+    B.Cells(Y, 11).PasteSpecial Paste:=xlPasteValues
+    'New rent
+    A.Cells(x, 5).Copy
+    B.Cells(Y, 10).PasteSpecial Paste:=xlPasteValues
+    End If
+
+ActiveCell.Offset(1, 0).Select
+x = x + 1
+ 
+Loop Until ActiveCell = "" Or ActiveCell = "MONTHLY"
+
+End If
+
+W = 2
+
+B.Activate
+
+Do
+B.Cells(W, 1) = "THIRTY"
+B.Cells(W, 2) = "30"
+B.Cells(W, 9) = "1st"
+W = W + 1
+Loop Until W = Y Or W > Y
+
+Range("A2").Select
+
+Do
+Y = ActiveCell.Value
+
+If Y = "" Then
+Range(ActiveCell, "M200").EntireRow.Delete
+End If
+
+If Y <> "" Then
+ActiveCell.Offset(1, 0).Select
+End If
+
+Loop Until Y = ""
+
+User = Environ("Username")
+
+'Update the tenant names using the tenant name list on the template folder
+Workbooks.Open "S:\-----Tenant name listing and templates-----\Tenant names list.xlsx"
+Set C = ActiveWorkbook.Sheets("Sheet1")
+Set D = ActiveWorkbook
+
+Ar1 = C.Range("A1:C1500")
+
+x = 2
+Z = 2
+U = UBound(Ar1)
+ActiveWindow.WindowState = xlMinimized
+
+Do
+x = 2
+    If Ar1(x, 1) <> Propcd Then
+        Do
+        x = x + 1
+        Loop Until Ar1(x, 1) = Propcd Or x > U
+    End If
+    
+    
+    If Ar1(x, 1) = Propcd Then
+      Do
+        If B.Cells(Z, 5) = Ar1(x, 2) Then
+        B.Cells(Z, 3) = Ar1(x, 3)
+        End If
+        
+        If B.Cells(Z, 5) <> Ar1(x, 2) Then
+        x = x + 1
+        End If
+      Loop Until B.Cells(Z, 3) <> "" Or x > U
+            If B.Cells(Z, 3) <> "" Then
+            Z = Z + 1
+            End If
+            If x > U Then
+            B.Cells(Z, 3) = "N/A"
+            Z = Z + 1
+            End If
+    End If
+Loop Until B.Cells(Z, 5) = ""
+
+MailMerge:
+D.Close
+B.Activate
+B.Range("A1").Select
+Application.Wait (Now + TimeValue("0:00:05"))
+'Mail Merge Macro, May need to change the location of the document to open
+    With appWD
+        'Disable alerts to prevent an SQL prompt
+        .DisplayAlerts = wdAlertsNone
+        'Open the mailmerge main document
+'******************************************************Make sure to change this to the Correct File path |
+'                                                                                                        V
+        Set wddoc = .Documents.Open("S:\-----Tenant name listing and templates-----\MOST RECENT RENT INC TEMPLATE word for macro.doc")
+        With wddoc
+             .ActiveWindow.View.Type = wdNormalView
+            With .MailMerge
+                'Define the mailmerge type
+                .MainDocumentType = wdDirectory
+                'Connect to the data source
+                .OpenDataSource Name:=strWorkbookName, ReadOnly:=True, AddToRecentFiles:=False, _
+                Revert:=False, Format:=wdOpenFormatAuto, Connection:="Data Source=" _
+                & strWorkbookName & ";Mode=Read", SQLStatement:="SELECT * FROM [Sheet2$]"
+                .SuppressBlankLines = True
+                With .DataSource
+                    .FirstRecord = wdDefaultFirstRecord
+                    .LastRecord = wdDefaultLastRecord
+                End With
+                'Define the output
+                .Destination = wdSendToNewDocument
+                'Excecute the merge
+                .Execute
+                'Disconnect from the data source
+                .MainDocumentType = wdNotAMergeDocument
+            End With
+            'Close the mailmerge main document
+            .Close False
+        End With
+        'Restore the Word alerts
+        .DisplayAlerts = wdAlertsAll
+        'Display Word and the document
+        .Visible = True
+    End With
+A.Activate
+MsgBox "The rent increase letters are ready!", vbOKOnly + vbInformation + vbMsgBoxSetForeground, "Rent Increase Letters"
+End Sub
