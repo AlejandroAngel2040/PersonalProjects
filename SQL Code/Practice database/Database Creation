@@ -1,0 +1,52 @@
+Create database warehouse;
+Use warehouse;
+
+Create Table performance (
+	RecordID INT AUTO_INCREMENT PRIMARY KEY,
+    Category INT,
+    ItemNumber INT,
+    EmployeeName VARCHAR (50),
+    EmployeeID INT,
+    Timestamp Datetime,
+    Demand INT, 
+    Status ENUM('Picked', 'Not Picked')
+    );
+    
+Create Table employees(
+	EmployeeID INT PRIMARY KEY,
+    EmployeeName VARCHAR(50)
+);
+    
+Insert INTO employees (EmployeeID, EmployeeName)
+Select seq, concat('Employee_', seq)
+From (
+		Select @row := @row +1 as seq
+        From (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a,
+         (SELECT 0 UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+          UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b,
+          (Select @row :=0) r
+		Limit 200
+	) as X;
+
+INSERT INTO performance (Category, ItemNumber, EmployeeName, EmployeeID, TimeStamp, Demand, Status)
+SELECT 
+    ELT(FLOOR(1 + (RAND() * 3)), 25, 38, 45) AS Category,
+    FLOOR(1 + RAND() * 9000) AS ItemNumber,
+    e.EmployeeName,
+    e.EmployeeID,
+    -- Random timestamp between 6:00 AM and 4:00 PM today
+    CONCAT(CURDATE(), ' ', SEC_TO_TIME(21600 + FLOOR(RAND() * 36000))) AS TimeStamp,
+    FLOOR(1 + RAND() * 150) AS Demand,
+    IF(RAND() < 0.5, 'Picked', 'Not Picked') AS Status
+FROM employees e
+JOIN (
+    SELECT 1 AS dummy FROM
+    (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL
+     SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL
+     SELECT 9 UNION ALL SELECT 10) a,
+    (SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL
+     SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL
+     SELECT 9 UNION ALL SELECT 10) b
+    LIMIT 50  -- 50 x 200 = 10,000 rows total
+) AS x;
