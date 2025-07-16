@@ -1,3 +1,4 @@
+
 Create database warehouse;
 Use warehouse;
 
@@ -11,7 +12,8 @@ Create Table performance (
     Demand INT, 
     Status ENUM('Picked', 'Not Picked')
     );
-    
+
+----------------------------------------- Create employees table and insert 200 rows    
 Create Table employees(
 	EmployeeID INT PRIMARY KEY,
     EmployeeName VARCHAR(50)
@@ -50,3 +52,63 @@ JOIN (
      SELECT 9 UNION ALL SELECT 10) b
     LIMIT 50  -- 50 x 200 = 10,000 rows total
 ) AS x;
+
+---------------------------------Items table creation
+CREATE TABLE items (
+    ItemNumber INT PRIMARY KEY,
+    ItemName VARCHAR(100),
+    Category INT,
+    Weight DECIMAL(5,2), -- in lbs
+    SupplierID INT
+);
+
+-- Insert 9000 unique rows using a session variable
+SET @row := 0;
+
+INSERT INTO items (ItemNumber, ItemName, Category, Weight, SupplierID)
+SELECT 
+    @row := @row + 1 AS ItemNumber,
+    CONCAT('Item_', @row),
+    ELT(FLOOR(1 + (RAND() * 3)), 25, 38, 45),
+    ROUND(0.5 + RAND() * 19.5, 2),
+    FLOOR(1 + RAND() * 10)
+FROM 
+    (SELECT 1 FROM information_schema.columns LIMIT 9000) AS filler;
+    Select *
+    from items;
+
+
+---------------------------------- Suppliers table creation
+    CREATE TABLE suppliers (
+    SupplierID INT PRIMARY KEY,
+    SupplierName VARCHAR(100),
+    Region VARCHAR(50)
+);
+
+-- Insert 10 suppliers
+INSERT INTO suppliers (SupplierID, SupplierName, Region)
+SELECT 
+    id,
+    CONCAT('Supplier_', id),
+    ELT(FLOOR(1 + (RAND() * 5)), 'North', 'South', 'East', 'West', 'Midwest')
+FROM (
+    SELECT @sid := @sid + 1 AS id
+    FROM (SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
+          UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 UNION SELECT 10) x,
+         (SELECT @sid := 0) r
+) a;
+
+
+----------------------------------- Departments table creation
+CREATE TABLE departments (
+    DepartmentID INT PRIMARY KEY,
+    DepartmentName VARCHAR(50)
+);
+
+-- Simple list
+INSERT INTO departments (DepartmentID, DepartmentName) VALUES
+(1, 'Picking'),
+(2, 'Packing'),
+(3, 'Inventory'),
+(4, 'Shipping'),
+(5, 'Receiving');
