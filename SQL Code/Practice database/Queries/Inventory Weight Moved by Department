@@ -1,0 +1,10 @@
+SELECT 
+  d.DepartmentName,
+  SUM(i.Weight) AS TotalWeightMoved
+FROM performance p
+JOIN employee_departments ed ON p.EmployeeID = ed.EmployeeID
+JOIN departments d ON ed.DepartmentID = d.DepartmentID
+JOIN items i ON p.ItemNumber = i.ItemNumber
+WHERE p.Status = 'Picked'
+GROUP BY d.DepartmentName
+ORDER BY TotalWeightMoved DESC;

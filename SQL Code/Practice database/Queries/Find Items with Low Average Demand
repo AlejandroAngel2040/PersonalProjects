@@ -1,0 +1,9 @@
+SELECT 
+  i.ItemNumber,
+  i.ItemName,
+  ROUND(AVG(p.Demand), 2) AS AvgDemand
+FROM performance p
+JOIN items i ON p.ItemNumber = i.ItemNumber
+GROUP BY i.ItemNumber, i.ItemName
+HAVING AVG(p.Demand) < 10
+ORDER BY AvgDemand ASC;

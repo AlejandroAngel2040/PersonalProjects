@@ -1,0 +1,7 @@
+SELECT 
+  HOUR(TimeStamp) AS Hour,
+  COUNT(*) AS PickCount
+FROM performance
+WHERE Status = 'Picked'
+GROUP BY HOUR(TimeStamp)
+ORDER BY Hour;

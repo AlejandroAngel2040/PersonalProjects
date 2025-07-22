@@ -1,0 +1,9 @@
+SELECT 
+  EmployeeID,
+  EmployeeName,
+  SUM(Demand) AS TotalDemand
+FROM performance
+WHERE Status = 'Picked'
+GROUP BY EmployeeID, EmployeeName
+ORDER BY TotalDemand DESC
+LIMIT 10;

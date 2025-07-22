@@ -1,0 +1,9 @@
+SELECT 
+  EmployeeID,
+  EmployeeName,
+  SUM(Demand) AS TotalDemand,
+  COUNT(*) AS OrdersHandled,
+  ROUND(SUM(Demand) / COUNT(*), 2) AS AvgDemandPerOrder,
+  RANK() OVER (ORDER BY SUM(Demand) DESC) AS Rank
+FROM performance
+GROUP BY EmployeeID, EmployeeName;

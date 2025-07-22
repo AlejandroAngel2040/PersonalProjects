@@ -1,0 +1,9 @@
+SELECT 
+  s.SupplierName,
+  ROUND(AVG(i.Weight), 2) AS AvgWeight,
+  COUNT(*) AS NumItems
+FROM items i
+JOIN suppliers s ON i.SupplierID = s.SupplierID
+GROUP BY s.SupplierName
+ORDER BY AvgWeight DESC
+LIMIT 5;

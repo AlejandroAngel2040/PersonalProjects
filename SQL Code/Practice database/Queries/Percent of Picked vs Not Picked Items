@@ -1,0 +1,6 @@
+SELECT 
+  Status,
+  COUNT(*) AS Count,
+  ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS Percentage
+FROM performance
+GROUP BY Status;
