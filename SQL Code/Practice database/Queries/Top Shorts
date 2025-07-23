@@ -1,9 +1,8 @@
-Select
+SELECT
 P.ItemNumber,
-Sum(P.Demand) DEM
-From warehouse.performance as P
-Where P.status = 'Not Picked'
-Group by P.ItemNumber
-Order by DEM DESC
-Limit 10
-;
+SUM(P.Demand) DEM
+FROM warehouse.performance as P
+WHERE P.status = 'Not Picked'
+GROUP BY P.ItemNumber
+ORDER BY DEM DESC
+LIMIT 10;

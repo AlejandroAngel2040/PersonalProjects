@@ -1,9 +1,9 @@
-Select 
-Rank() Over(Order by Sum(Demand) DESC) as RankNumber,
-A.EmployeeName,
-A.EmployeeID,
-Sum(Demand) as TotalDemand
-From warehouse.performance as A
-Group by EmployeeName, EmployeeID
-Order by TotalDemand ASC
-Limit 10;
+SELECT
+  RANK() OVER(ORDER BY SUM(Demand) DESC) AS RankNumber,
+  A.EmployeeName,
+  A.EmployeeID,
+  SUM(Demand) AS TotalDemand
+FROM warehouse.performance AS A
+GROUP BY EmployeeName, EmployeeID
+ORDER BY TotalDemand ASC
+LIMIT 10;
