@@ -1,0 +1,83 @@
+import asyncio
+import aiohttp
+from bs4 import BeautifulSoup
+import time
+from flask import session
+import pandas as pd
+
+start_time = time.perf_counter()
+
+cities = ['los-angeles']
+months = [1,2,3,4,5,6,7,8,9,10,11,12]
+years = ['2023']
+
+# URL Format Example: https://www.timeanddate.com/weather/usa/los-angeles/historic?month=1&year=2023
+
+base_url = "https://www.timeanddate.com/weather/usa/{cities}/historic?month={months}&year={years}"
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.10 Safari/537.36"
+}
+
+
+Master_list = []
+#async def fetch_weather(session, city, year, month):
+#    url = base_url.format(city, month, year)
+#    async with session.get(url, headers=headers) as response:
+#            content = await response.text()
+#            soup = BeautifulSoup(content, 'html.parser')
+
+#            weather_data = []
+
+#            li_elements = soup.find_all('li')
+#    print(li_elements)
+
+#async def fetch_weather(session, city, year, month):
+    #url = base_url.format(city, month, year)
+    #try:
+#        async with session.get(url) as response:
+#            content = await response.text()
+#            soup = BeautifulSoup(content, 'html.parser')
+
+#            weather_data = []
+
+#            li_elements = soup.find_all('li', class_='ww-month-weekdays foreacast-archive')
+#            for li in li_elements:
+#                try:
+#                    day = li.find('div').text.strip()
+#                    condition = li.find('i').get('title', '').strip()
+#                    high = li.find('span').text.strip()
+#                    low = li.find('p').text.strip()
+
+#                    weather_data.append([city, year, month, day, condition, high, low])
+#                except Exception as e:
+#                    print(f"Error parsing one entry: {e}")
+#                    continue
+
+            # Add individual rows to Master_list
+#            Master_list.extend(weather_data)
+#            print(condition)
+#    except Exception as e:
+#        print(f"Error fetching {url}: {e}")
+
+
+#async def main():
+#    async with aiohttp.ClientSession(headers=headers) as session:
+#        tasks = [
+#            fetch_weather(session, city, year, month)
+#            for city in cities
+#            for year in years
+#            for month in months
+#        ]
+#        await asyncio.gather(*tasks)
+
+    # Create DataFrame and save
+#    df = pd.DataFrame(Master_list, columns=['City', 'Year', 'Month', 'Day', 'Condition', 'High', 'Low'])
+#    df.to_csv('weather_data.csv', index=False)
+#    print("Saved to weather_data.csv")
+
+
+#asyncio.run(main())
+
+#end_time = time.perf_counter()
+#print(f"Finished in {end_time - start_time:.2f} seconds")
+#print(Master_list)  # Display the final list of weather data

@@ -1,0 +1,76 @@
+import asyncio
+import aiohttp
+from bs4 import BeautifulSoup
+import pandas as pd
+import time
+
+cities = ['los-angeles']
+months = list(range(1, 13))
+years = ['2023']
+
+base_url = "https://www.timeanddate.com/weather/usa/{city}/historic?month={month}&year={year}"
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+}
+
+results = []
+
+async def fetch(session, url, city, month, year):
+    try:
+        async with session.get(url, headers=headers) as response:
+            if response.status != 200:
+                print(f"❌ Error {response.status} for {url}")
+                return
+
+            html = await response.text()
+            soup = BeautifulSoup(html, 'html.parser')
+
+            # Example data extraction — adjust as needed
+            weather_table = soup.find('table', class_='zebra tb-wt fw tb-hover')
+            if not weather_table:
+                print(f"⚠️ No data table found for {city} {month}/{year}")
+                return
+
+            for row in weather_table.find_all('tr')[1:]:  # Skip header
+                cols = row.find_all('td')
+                if len(cols) >= 4:
+                    time_of_day = cols[0].text.strip()
+                    temperature = cols[1].text.strip()
+                    weather = cols[2].text.strip()
+                    wind = cols[3].text.strip()
+
+                    results.append({
+                        "City": city,
+                        "Year": year,
+                        "Month": month,
+                        "Time": time_of_day,
+                        "Temp": temperature,
+                        "Weather": weather,
+                        "Wind": wind
+                    })
+    except Exception as e:
+        print(f"❌ Exception for {url}: {e}")
+
+async def main():
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for city in cities:
+            for year in years:
+                for month in months:
+                    url = base_url.format(city=city, month=month, year=year)
+                    tasks.append(fetch(session, url, city, month, year))
+                    await asyncio.sleep(1)  # Rate limiting
+
+        await asyncio.gather(*tasks)
+
+start_time = time.perf_counter()
+asyncio.run(main())
+end_time = time.perf_counter()
+
+print(f"✅ Done in {end_time - start_time:.2f} seconds")
+
+# Save to CSV
+df = pd.DataFrame(results)
+df.to_csv("weather_data.csv", index=False)
+print("📁 Data saved to weather_data.csv")

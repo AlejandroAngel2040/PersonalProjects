@@ -1,0 +1,43 @@
+from meteostat import Point, Daily
+from datetime import datetime
+import pandas as pd
+
+# Define weather code descriptions
+weather_codes = {
+    0: 'Clear', 1: 'Fair', 2: 'Partly Cloudy', 3: 'Cloudy', 4: 'Overcast',
+    5: 'Fog', 6: 'Freezing Fog', 7: 'Light Rain', 8: 'Rain', 9: 'Heavy Rain',
+    10: 'Freezing Rain', 11: 'Heavy Freezing Rain', 12: 'Sleet', 13: 'Heavy Sleet',
+    14: 'Light Snowfall', 15: 'Snowfall', 16: 'Heavy Snowfall', 17: 'Rain Shower',
+    18: 'Heavy Rain Shower', 19: 'Sleet Shower', 20: 'Heavy Sleet Shower',
+    21: 'Snow Shower', 22: 'Heavy Snow Shower', 23: 'Lightning', 24: 'Hail',
+    25: 'Thunderstorm', 26: 'Heavy Thunderstorm', 27: 'Storm'
+}
+
+# Set location and time period
+location = Point(34.05, -118.24)  # Los Angeles
+start = datetime(2023, 1, 1,0)
+end = datetime(2023, 12, 31,23)
+
+# Fetch daily weather data
+data = Daily(location, start, end)
+data = data.fetch()
+
+# Add city
+data['city'] = 'Los Angeles'
+
+# Only add condition if 'coco' column exists
+if 'coco' in data.columns:
+    data['condition'] = data['coco'].map(weather_codes)
+else:
+    data['coco'] = None
+    data['condition'] = 'Not Available'
+
+# Reset index to make date a column
+data.reset_index(inplace=True)
+
+# Save to CSV
+data.to_csv('weather_data.csv', index=False)
+
+print("✅ weather_data.csv saved. 'coco' column was present:", 'coco' in data.columns)
+
+
